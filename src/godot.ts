@@ -57,9 +57,9 @@ async function exportBuilds(): Promise<BuildResult[]> {
 
   configureAndroidExport();
 
-  if (!USE_GODOT_3) {
-    await importProject();
-  }
+  // if (!USE_GODOT_3) {
+  //   await importProject();
+  // }
 
   const results = await doExport();
   core.endGroup();
