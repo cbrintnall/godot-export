@@ -341,6 +341,9 @@ async function doExport(): Promise<BuildResult[]> {
  * @returns
  */
 function findGodotExecutablePath(basePath: string): string | undefined {
+  if (!fs.lstatSync(basePath).isDirectory()) {
+    return undefined;
+  }
   core.info(`🔍 Looking for Godot executable in ${basePath}`);
   const paths = fs.readdirSync(basePath);
   const dirs: string[] = [];
@@ -348,7 +351,7 @@ function findGodotExecutablePath(basePath: string): string | undefined {
   for (const subPath of paths) {
     const fullPath = path.join(basePath, subPath);
     const stats = fs.statSync(fullPath);
-    const isLinux = stats.isFile() && (path.extname(fullPath) === '.64' || path.extname(fullPath) === '.x86_64');
+    const isLinux = stats.isFile() && (path.extname(fullPath) === '.64' || path.extname(fullPath) === '.x86_64' || path.extname(fullPath) === ".arm64");
     const isMac = process.platform === 'darwin' && stats.isDirectory() && path.extname(fullPath) === '.app';
     if (isLinux) {
       return fullPath;

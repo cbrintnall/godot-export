@@ -77242,13 +77242,16 @@ async function doExport() {
  * @returns
  */
 function findGodotExecutablePath(basePath) {
+    if (!external_fs_.lstatSync(basePath).isDirectory()) {
+        return undefined;
+    }
     core.info(`🔍 Looking for Godot executable in ${basePath}`);
     const paths = external_fs_.readdirSync(basePath);
     const dirs = [];
     for (const subPath of paths) {
         const fullPath = external_path_.join(basePath, subPath);
         const stats = external_fs_.statSync(fullPath);
-        const isLinux = stats.isFile() && (external_path_.extname(fullPath) === '.64' || external_path_.extname(fullPath) === '.x86_64');
+        const isLinux = stats.isFile() && (external_path_.extname(fullPath) === '.64' || external_path_.extname(fullPath) === '.x86_64' || external_path_.extname(fullPath) === ".arm64");
         const isMac = process.platform === 'darwin' && stats.isDirectory() && external_path_.extname(fullPath) === '.app';
         if (isLinux) {
             return fullPath;
