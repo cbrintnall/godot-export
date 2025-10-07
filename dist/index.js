@@ -77046,6 +77046,7 @@ async function downloadFile(filePath, downloadUrl, cacheKey, restoreKey) {
         }
     }
     lib_core.info(`Downloading file from ${downloadUrl}`);
+    await (0,lib_exec.exec)('sudo apt-get update && sudo apt-get install -y wget');
     await (0,lib_exec.exec)('wget', ['-nv', downloadUrl, '-O', filePath]);
     if (CACHE_ACTIVE && isCacheFeatureAvailable()) {
         await (0,cache.saveCache)([filePath], cacheKey);
