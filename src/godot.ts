@@ -108,7 +108,8 @@ async function downloadFile(
     }
   }
   core.info(`Downloading file from ${downloadUrl}`);
-  await exec('sudo apt-get update && sudo apt-get install -y wget')
+  await exec('sudo apt-get update')
+  await exec('sudo apt-get install -y wget')
   await exec('wget', ['-nv', downloadUrl, '-O', filePath]);
   if (CACHE_ACTIVE && isCacheFeatureAvailable()) {
     await saveCache([filePath], cacheKey);
